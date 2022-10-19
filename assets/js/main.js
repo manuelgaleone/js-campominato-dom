@@ -86,13 +86,13 @@ function generazioneCelle(number, cells, tag, classe) {
 let tentativi = 0;
 
 //Generazione bombe
-let bombe = generatebombe(min, max)
+let bombe = generatebombe()
 
-function generatebombe(min, max) {
-  let bombe = []
-  while (bombe.length !== 16) {
+function generatebombe() {
+  let bombe = [];
+  for (let i = 0; i < 16; i++) {
 
-    let bomb = generazioneNumeri(min, max);
+    let bomb = generazioneNumeri(1, 16);
 
     if (!bombe.includes(bomb)) {
       
