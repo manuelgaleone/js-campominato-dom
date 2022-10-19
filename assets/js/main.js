@@ -1,13 +1,17 @@
 /*
+Copiamo la griglia fatta ieri nella nuova repo e aggiungiamo la logica del gioco (attenzione: non bisogna copiare tutta la cartella dell'esercizio ma solo l'index.html, e le cartelle js/ css/ con i relativi script e fogli di stile, per evitare problemi con l'inizializzazione di git).
 
-L'utente clicca su un bottone che genererà una griglia di gioco quadrata.
+Il computer deve generare 16 numeri casuali nello stesso range della difficoltà prescelta: le bombe.
 
-- Ogni cella ha un numero progressivo, da 1 a 100.
+Attenzione:
+**nella stessa cella può essere posizionata al massimo una bomba, perciò nell’array delle bombe non potranno esserci due numeri uguali.
 
-- Ci saranno quindi 10 caselle per ognuna delle 10 righe.
+In seguito l'utente clicca su una cella: se il numero è presente nella lista dei numeri generati - abbiamo calpestato una bomba - la cella si colora di rosso e la partita termina.
 
-- Quando l'utente clicca su ogni cella, la cella cliccata si colora di azzurro ed emetto un messaggio in console con il numero della cella cliccata.
+Altrimenti la cella cliccata si colora di azzurro e l'utente può continuare a cliccare sulle altre celle.
+La partita termina quando il giocatore clicca su una bomba o quando raggiunge il numero massimo possibile di numeri consentiti (ovvero quando ha rivelato tutte le celle che non sono bombe).
 
+Al termine della partita il software deve comunicare il punteggio, cioè il numero di volte che l’utente ha cliccato su una cella che non era una bomba.
 */
 
 //Seleziono gli elementi dalla DOM
@@ -42,9 +46,24 @@ function generazioneGriglia(trigEl, wrapEl, max, per_row) {
         
     //Cambio colore - classe
     this.classList.toggle('active')
-        
+    
     //Numero interno alla cella
     console.log(this.innerText);
+
+    if (isBomb(i, bombe)) {
+      console.log("Bomba presa");
+      this.style.backgroundcolor = "red";
+      this.innerText = "Bomba";
+      wrapEl.innerHTML = "Partita finita" + tentativi + "punti"
+    } else {
+      console.log("Salvo");
+      tentativi++;
+    }
+
+    if (tentativi == max - 16) {
+      console.log("Hai vinto " + tentativi + "punti!")
+      wrapEl.innerHTML = "Hai vinto" + tentativi + "punti!"
+    }
 
     })
    }
@@ -62,6 +81,38 @@ function generazioneCelle(number, cells, tag, classe) {
   markupEl.style.width = `calc(100% / ${cells})`
 
   return markupEl
+}
+
+let tentativi = 0;
+
+//Generazione bombe
+let bombe = generatebombe(min, max)
+
+function generatebombe(min, max) {
+  let bombe = []
+  while (bombe.length !== 16) {
+
+    let bomb = generazioneNumeri(min, max);
+
+    if (!bombe.includes(bomb)) {
+      
+      bombe.push(bomb)
+    }
+  }
+  return bombe
+}
+
+//Funzione numeri casuali
+function generazioneNumeri(min, max) {
+    return Math.floor(Math.random() * (max - min) ) + min;
+  }
+
+//Funzione di bomba
+function isBomb(numb, lista) {
+  if (lista.includes(numb)) {
+    return true
+  } 
+    return false
 }
 
 /*

@@ -47,6 +47,9 @@ body {
     margin: auto;
     align-items: center;
     font-size: 25px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .cell.active {
